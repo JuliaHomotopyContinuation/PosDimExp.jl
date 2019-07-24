@@ -1,0 +1,13 @@
+name = "PosDimExp"
+uuid = "249c5014-ae0f-11e9-3b3e-f73382333d57"
+license = "MIT"
+version = "0.1.0"
+
+[deps]
+HomotopyContinuation = "f213a82b-91d6-5c5d-acf7-10f1c761b327"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
