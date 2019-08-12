@@ -1,7 +1,11 @@
 module PosDimExp
+import HomotopyContinuation
+const HC = HomotopyContinuation
+export witness_sup, witness, trace_list, WSet, trace, cache, LinearIntersectionSystem
 
-export hello_world
-
-hello_world() = "Hello!"
-
+include("linear_sys.jl")
+include("wset.jl")
+include("trace.jl")
+include("disj_set.jl")
+include("irr_comp.jl")
 end

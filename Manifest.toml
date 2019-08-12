@@ -16,9 +16,9 @@ uuid = "a8cc5b0e-0ffa-5ad4-8c14-923d3ee1735f"
 version = "4.0.0"
 
 [[DataAPI]]
-git-tree-sha1 = "891a09f4f90361a28d0391c104a65c0202e22624"
+git-tree-sha1 = "8903f0219d3472543fc4b2f5ebaf675a07f817c0"
 uuid = "9a962f9c-6df0-11e9-0e5d-c546b8b5ee8a"
-version = "1.0.0"
+version = "1.0.1"
 
 [[DataValueInterfaces]]
 git-tree-sha1 = "bfc1187b79289637fa0ef6d4436ebdfe6905cbd6"
@@ -39,15 +39,15 @@ uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 
 [[DoubleFloats]]
 deps = ["GenericSVD", "GenericSchur", "LinearAlgebra", "Polynomials", "Quadmath", "Random", "Requires"]
-git-tree-sha1 = "ca7f28d28c736ee0e10c0b18b897455ab47e9862"
+git-tree-sha1 = "4e3112739c4eb107b6c7a018483a3d84332b4de0"
 uuid = "497a8b3b-efae-58df-a0af-a86822472b78"
-version = "0.9.3"
+version = "0.9.4"
 
 [[DynamicPolynomials]]
 deps = ["LinearAlgebra", "MultivariatePolynomials", "Pkg", "Reexport", "Test"]
-git-tree-sha1 = "73bb16dca284abf4aeb5e6055d1be00a9ccf1d20"
+git-tree-sha1 = "3a62d031f2ad15a68e4b4603bc85ebb1580438ca"
 uuid = "7c1d4256-1411-5781-91ec-d7bc3513ac07"
-version = "0.3.1"
+version = "0.3.2"
 
 [[ElasticArrays]]
 git-tree-sha1 = "d9c079b747b9e9985d83e806bb77e41d149c959a"
