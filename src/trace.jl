@@ -20,13 +20,14 @@ function trace(F::LinearIntersectionSystem, pts, coords, s_1, s_2, rndn_dir, u)
     #This system defines the affine linear space of the potential witness set, translated into the random direction rnd_dir:
     @polyvar s
     @polyvar λ[1:size(F.A, 2)]
-    H = LinearIntersectionSystem(F.F, F.A * Diagonal(λ), F.b + rndn_dir.*s)
-    G = F.A * λ + F.b + rndn_dir.*s
+    p = [vec(F.A * Diagonal(λ));F.b + rndn_dir.*s]
+    F_mu = MutableLinearIntersectionSystem(F, p)
+    #G = F.A * λ + F.b + rndn_dir.*s
     #We track the solutions of the given witness set via homotopy, while translating the affine space.
     #The solutions are descriped implicitly by their coordinates with respect to the matrix matrix.
 
-    Y_1 = solutions(solve(H, coords; parameters = [s], start_parameters = [0], target_parameters = [s_1] ))
-    Y_2 = solutions(solve(H, coords; parameters = [s], start_parameters = [0], target_parameters = [s_2] ))
+    Y_1 = solutions(solve(F_mu, coords; parameters = [s], start_parameters = [0], target_parameters = [s_1] ))
+    Y_2 = solutions(solve(F_mu, coords; parameters = [s], start_parameters = [0], target_parameters = [s_2] ))
 
     #From the obtained coordinates we reconstruct the actual witness sets:
     Y_1 = map( u -> F.A * u + F.b - rndn_dir.*s_1, Y_1 )

@@ -62,11 +62,7 @@ function witness_sup(F, i)
     if i < N - gen_rank(F_stat)
         return WSet(LinearIntersectionSystem(F_stat, A, b), pts, coords)
     end
-"""
-    @polyvar u[1:N-i]
-    comp = F ∘ (A * u + b)
-    all_coords = HC.solutions(HC.solve(comp))
-"""
+
     F_lin = LinearIntersectionSystem(F_stat, A, b)
     all_coords = HC.solutions(HC.solve(F_lin))
     #Sort out junk due to randomization.

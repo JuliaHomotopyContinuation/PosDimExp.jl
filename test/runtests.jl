@@ -2,8 +2,8 @@ using Test, PosDimExp, HomotopyContinuation
 
 @testset "PosDimExp tests" begin
     @polyvar x[1:4]
-    #F = SPSystem([x[1]*x[3]-x[2]^2; x[2]*x[4]-x[3]^2; x[1]*x[4]-x[2]*x[3]; x[4]-1])
-    F = [  x[1]^3- x[2]*x[1] + 1; x[1]*x[3] + x[2] + 0.5; x[1] + x[2]^3 ]
+    F = SPSystem([x[1]*x[3]-x[2]^2; x[2]*x[4]-x[3]^2; x[1]*x[4]-x[2]*x[3]; x[4]-1])
+    #F = [  x[1]^3- x[2]*x[1] + 1; x[1]*x[3] + x[2] + 0.5; x[1] + x[2]^3 ]
     w_sup = witness_sup(F, 0)
 
     @test length(w_sup.pts) == 3

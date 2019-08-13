@@ -69,3 +69,29 @@ Base.size(F::LinearIntersectionSystem) = (size(F.F)[1], size(F.A)[2])
 _return_type(F::LinearIntersectionSystem, c::LinearIntersectionSystemCache) = typeof(F.A[1,1] * c.u[1])
 
 HC.degrees(F::LinearIntersectionSystem) = HC.degrees(F.F)
+
+
+struct MutableLinearIntersectionSystem{LIS<:LinearIntersectionSystem}
+	F::LIS
+end
+
+function set_Ab!(F::LinearIntersectionSystem, p)
+	# p == [vec(F.A);F.b]
+	k = 1
+	for j in 1:size(F.A,2), i in 1:size(F.A,1)
+		F.A[i,j] = p[k]
+		k += 1
+	end
+	for i in 1:size(F.b, 1)
+		F.b[i] = p[k]
+		k += 1
+	end
+	F
+end
+
+function HC.evaluate(F::MutableLinearIntersectionSystem, x, p, cache)
+	set_Ab!(F.F, p)
+	HC.evaluate(F.F, x, cache.cache)
+end
+
+HC.degrees(F::MutableLinearIntersectionSystem) = HC.degrees(F.F)
