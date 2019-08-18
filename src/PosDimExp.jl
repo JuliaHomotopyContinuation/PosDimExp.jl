@@ -1,7 +1,7 @@
 module PosDimExp
 import HomotopyContinuation
 const HC = HomotopyContinuation
-export witness_sup, witness, trace_list, WSet, trace, cache, LinearIntersectionSystem
+export witness_sup, witness, trace_list, WSet, trace, cache, LinearIntersectionSystem, MutableLinearIntersectionSystem
 
 include("linear_sys.jl")
 include("wset.jl")

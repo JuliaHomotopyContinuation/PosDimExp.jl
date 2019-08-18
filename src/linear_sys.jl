@@ -71,9 +71,15 @@ _return_type(F::LinearIntersectionSystem, c::LinearIntersectionSystemCache) = ty
 HC.degrees(F::LinearIntersectionSystem) = HC.degrees(F.F)
 
 
-struct MutableLinearIntersectionSystem{LIS<:LinearIntersectionSystem}
+struct MutableLinearIntersectionSystem{LIS <: LinearIntersectionSystem} <: HC.AbstractSystem
 	F::LIS
 end
+
+
+function HC.cache(F::MutableLinearIntersectionSystem, x, args...)
+    HC.cache(F.F, x)
+end
+
 
 function set_Ab!(F::LinearIntersectionSystem, p)
 	# p == [vec(F.A);F.b]
@@ -89,9 +95,72 @@ function set_Ab!(F::LinearIntersectionSystem, p)
 	F
 end
 
-function HC.evaluate(F::MutableLinearIntersectionSystem, x, p, cache)
+
+
+
+function HC.evaluate(F::MutableLinearIntersectionSystem, x, p, cache::LinearIntersectionSystemCache)
 	set_Ab!(F.F, p)
-	HC.evaluate(F.F, x, cache.cache)
+	HC.evaluate(F.F, x, cache)
 end
 
+function HC.evaluate!(u, F::MutableLinearIntersectionSystem, x, p, cache::LinearIntersectionSystemCache)
+	set_Ab!(F.F, p)
+	HC.evaluate!(u, F.F, x, cache)
+end
+
+
+function HC.evaluate_and_jacobian(F::MutableLinearIntersectionSystem, x, p, cache::LinearIntersectionSystemCache)
+	set_Ab!(F.F, p)
+	HC.evaluate_and_jacobian(F.F, x, cache)
+end
+
+function HC.evaluate_and_jacobian!(u, U, F::MutableLinearIntersectionSystem, x, p, cache::LinearIntersectionSystemCache)
+	set_Ab!(F.F, p)
+	HC.evaluate_and_jacobian!(u, U, F.F, x, cache)
+end
+
+function HC.jacobian(F::MutableLinearIntersectionSystem, x, p, cache::LinearIntersectionSystemCache)
+	set_Ab!(F.F, p)
+    HC.jacobian(F.F, x, cache)
+end
+
+function HC.jacobian!(U, F::MutableLinearIntersectionSystem, x, p, cache::LinearIntersectionSystemCache)
+	set_Ab!(F.F, p)
+    HC.jacobian!(U, F.F, x, cache)
+end
+
+
+Base.size(F::MutableLinearIntersectionSystem) = size(F.F)
+
+_return_type(F::MutableLinearIntersectionSystem, c::LinearIntersectionSystemCache) = _return_type(F.F, c)
+
+
 HC.degrees(F::MutableLinearIntersectionSystem) = HC.degrees(F.F)
+
+function HC.differentiate_parameters!(U, F::MutableLinearIntersectionSystem, x, p, c::LinearIntersectionSystemCache)
+	U = zeros(_return_type(F, c), size(F.F,1), length(p))
+	set_Ab!(F.F, p)
+
+	jac = HC.jacobian!(U, F.F.F, F.F.A*x+F.F.b, c.cache)
+
+	for i = 1:size(F.F.A, 1)
+		for j = 1:size(F.F.A, 2)
+			for k = 1:size(F.F, 1)
+				U[k ,j*size(F.F,2)+i] += jac[k,i] * F.F.A[i,j]
+			end
+		end
+	end
+
+	for k = 1:size(F.F, 1)
+		for i = 1:size(F.F, 2)
+			U[k, length(p)-size(F.F,2)+i] += jac[k,i]
+		end
+	end
+
+    U
+end
+
+function HC.differentiate_parameters(F::MutableLinearIntersectionSystem, x, p, c::LinearIntersectionSystemCache)
+	U = similar(c.U, size(F.F, 1), length(p))
+    HC.differentiate_parameters!(U , F, x, p, c)
+end
