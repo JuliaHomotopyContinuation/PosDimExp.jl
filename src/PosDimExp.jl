@@ -8,4 +8,5 @@ include("wset.jl")
 include("trace.jl")
 include("disj_set.jl")
 include("irr_comp.jl")
+include("alpha_ver.jl")
 end

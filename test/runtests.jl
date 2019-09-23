@@ -1,4 +1,4 @@
-using Test, PosDimExp, HomotopyContinuation, LinearAlgebra
+using Test, PosDimExp, HomotopyContinuation, LinearAlgebra, DynamicPolynomials
 
 @testset "PosDimExp tests" begin
     @polyvar x[1:4]
@@ -41,4 +41,15 @@ end
     @test u ≈ evaluate(S_mut, w, parameters, system_cache)
     @test U ≈ jacobian(S_mut, w, parameters, system_cache)
     @test rank(differentiate_parameters(S_mut, randn(ComplexF64, 2),[vec(S_mut.F.A); S_mut.F.b], system_cache)) == 3
+end
+
+@testset "α-test" begin
+    @polyvar x y z
+    L = [x^2*y + z; 2*x*y - 4 + z^2; x*y + y^2 - 2]
+    F = SPSystem(L)
+    pt = randn(ComplexF32, 3)
+    pt2 = solutions(solve(L))[1]
+
+    @test PosDimExp.alphatest(L, F, pt)  > 1e-12
+    @test PosDimExp.alphatest(L, F, pt2) < 1e-12
 end
